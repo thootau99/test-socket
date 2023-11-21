@@ -1,0 +1,27 @@
+version: "3.8"
+
+networks:
+  test-socket-network:
+
+services:
+  api:
+    image: node:18-alpine
+    tty: true
+    command: cd /src/app && npm run start
+    volumes:
+      - .:/src/app
+    ports:
+      - 34567:3000
+    networks:
+      test-socket-network:
+        aliases:
+          - "api"
+  redis:
+    image: redis
+    networks:
+      test-socket-network:
+        aliases:
+          - "redis"
+
+  frontend:
+    image:
